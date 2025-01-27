@@ -13,5 +13,13 @@
 5. **Logging**  
     * **PnL Logging** – Logs variation-symbol PnL every minute, though the frequency can be changed through config file  
     * **Order Logging** – Logs all successfully placed orders.
-
+6. **Variable**
+    * Following are the variables that are already defined in the template
+        * View* _view
+        * Universe* _univ
+        * Portfolio* _portfolio
+        * Logger* _logger
+        * EXCHANGE exchange
+        * string dateToday
+        * vector<string> tradingDays
 
