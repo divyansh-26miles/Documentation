@@ -4,7 +4,7 @@
 1. **Config**
     * Config file parameters are read and loaded into variables.
 2. **Historical Data**
-    * The specified data file from the config is loaded into a data structure
+    * The specified data file from the config is loaded into a data structure.
 3. **Order Management** 
     * Orders can be sent either immediately or scheduled for a later time based on config file.
 4. **Maintenance Mode**
@@ -18,8 +18,8 @@
     * The required data structure is re-initialized after the crash with theoretical and executed positions.
     * The current day's data is loaded into the specified data structure as well.
 8. **Logging**  
-    * **PnL Logging** – Logs variation-symbol PnL every minute, though the frequency can be changed through config file  
-    * **Order Logging** – Logs all successfully placed orders.
+    * **PnL Logging** – Logging of variation-symbol wise PnL every minute, though the frequency can be changed through config file  .
+    * **Order Logging** – All successfully placed orders are logged in a file.
 9. **Variables**
     * Following are the variables that are already defined in the template:
         * `View* _view`
@@ -30,3 +30,11 @@
         * `string dateToday`
         * `vector<string> tradingDays`
 
+
+## Risk Checks
+1. **For User purpose**
+    * A function `is_valid_inst()` is provided,which takes an instrument ID as input and checks whether the instrument is suitable for placing an order.
+2. **Before placing an order**
+    * The existence of the instrument pointer is validated.
+    * The validity of the quote is verified.
+    * The existence of the required order worker is checked.
