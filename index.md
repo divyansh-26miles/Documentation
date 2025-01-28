@@ -35,24 +35,43 @@
 * 
 
 ### Variation Independent
-* `View* _view`
-* `Universe* _univ`
-* `Portfolio* _portfolio`
-* `Logger* _logger`
-* `EXCHANGE exchange`
-* `string dateToday`
-* `string stratType`
-* `string startTime`
-* `string endTime`
-* `string maintenanceFreq`: 
-* `bool shouldRun`
-* `bool hasCrashed`
-* `int maxLotsAtOnceOpt`
-* `int maxLotsAtOnceFut`
+* `View* _view`: Pointer to the master view, which manages all other data and pointers.
+* `Universe* _univ`: Pointer for fetching information about the universe.
+* `Portfolio* _portfolio`: Pointer for fetching portfolio data.
+* `Logger* _logger`: Pointer for logging data into files.
+* `EXCHANGE exchange`: Exchange on which trading will be executed.
+* `string dateToday`: Today's date.
+* `string stratType`: The `type` of strategy.
+* `string startTime`: A dummy variable required by the API.
+* `string endTime`: A dummy variable required by the API.
+* `string maintenanceFreq`: Frequency at which maintenance will run.
+* `bool shouldRun`: Indicates whether the current logic needs to run.
+* `bool hasCrashed`: Indicates whether the strategy has crashed.
+* `int maxLotsAtOnceOpt`: Maximum number of option lots that can be sent at once.
+* `int maxLotsAtOnceFut`: Maximum number of future lots that can be sent at once.
+* `vector<string> tradingDays`: Contains all trading days.
+* `vector<string> events`: Contains all events that need to be subscribed.
+* `vector<string> orderworkerRequired`: Instrument types for which an order worker is required.
+* `vector<string> orderworkerNames`: Names of the required order workers.
+* `map<string, OrderWorkerPtr> orderWorkers`: Contains pointers to all the required order workers.
+* `string maintenanceOrderSchedulingTime`: Duration for which maintenance orders need to be scheduled.
+* `bool varIsCheckStoploss`: Indicates whether stoploss checking is required.
+* `int maintenanceVarOffset`: Offset for setting up the maintenance variation.
+* `string maintenanceStartTime`: Time from which maintenance should start.
+* `string maintenanceEndTime`: Time at which maintenance should end.
+* `string stoplossCheckStartTime`: Time at which stoploss checking will start.
+* `string stoplossCheckEndTime`: Time at which stoploss checking will end.
+* `string stoplossCheckFreq`: Frequency at which stoploss will be checked.
+* `int _log_var_sym_pnl`: File pointer sequence for PnL logging.
+* `int _log_theoretical_signal`: File pointer sequence for executed signal logging.
+* `vector<vector<array<int, 3>>> instIdToOrderTypeToPosition`: Mapping of instrument ID to order type and position.
+* `vector<PositionInfo*> instIdToPositionInfo;`: Instrument-wise position information, where the vector index represents the instrument ID.
+* `enum OrderType`: `type` of order 
+* `enum QuantityType`: `type` of quantity
 
 ## Function Description
 1. **init()**: This is the init function of the strategy where all the variable and timers that are common accross the strategy system is defined and initialised.
 2. **logic_init()**: All the variables and data structures specific to the logic are loaded in this function.
 3. **setup_timers()**: This function initialises timers for all the variation that are supposed to be running today. This is called inside `logic_init()`.
 4. **load_historical_data()**: This function calls the function `load_trading_days` that initialises the `tradingDays` variable and loads the historical data in the variable `histData`. This function is called inside `logic_init()` as well.
-5. **crash_handler()**: This function initi
+5. **crash_handler()**:
