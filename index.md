@@ -30,10 +30,6 @@
     * The existence of the required order worker is checked.
 
 ## Global Variables
-### Variation Dependent
-* `vector<multimap<string, map<string, vector<string>>>>  histData`: Stores the historical data 
-* 
-
 ### Variation Independent
 * `View* _view`: Pointer to the master view, which manages all other data and pointers.
 * `Universe* _univ`: Pointer for fetching information about the universe.
@@ -68,6 +64,47 @@
 * `vector<PositionInfo*> instIdToPositionInfo;`: Instrument-wise position information, where the vector index represents the instrument ID.
 * `enum OrderType`: `type` of order 
 * `enum QuantityType`: `type` of quantity
+
+### Variation Dependent
+* `vector<multimap<string, map<string, vector<string>>>>  histData`: Stores historical data.
+* `vector<multimap<string, map<string, vector<string>>>> dayData`: Stores data generated during the day.
+* `map<int, vector<vector<array<int, 3>>>> varNoToInstIdToOrderTypeToPosition`: Stores all positions corresponding to a particular variation in this map, where the variation number is the key.
+* `map<int, vector<PositionInfo*>> varNoToInstIdToPositionInfo`: Stores PnL and price information of a particular variation in this map, with the variation number as the key.
+* `map<int, int> varNoToIndexMap`: Maps the variation number to the index corresponding to that variation in all variables of type `vector`.
+* `map<int, set<int>> varNoToActiveInstruments`: Contains the set of all instruments traded under a particular variation.
+* `map<pair<int, int>, Timestamp> varInstWiseStoplossCoolDownEndTime`: Stores the time after which a position can be taken for a specific (variation, instId) pair after hitting a stop loss.
+#### For all these variable, an index is fixed for a particular variation 
+* `vector<int> varNos`: All variation numbers running in this strategy.
+* `vector<bool> varRun`: Indicates whether the variation should run or not.
+* `vector<int> varLogicType`: The logic type of the variation.
+* `vector<string> varStartTime`: Start time of the variation.
+* `vector<string> varEndTime`: End time of the variation.
+* `vector<int> varFrequencySeconds`: Frequency (in seconds) at which a timer should run for the variation.
+* `vector<string> varEntryStartTime`: Time at which entry will start for the variation.
+* `vector<string> varEntryEndTime`: Time at which entry will end for the variation.
+* `vector<bool> varOrderSchedulingEnabled`: Indicates whether order scheduling is required for the variation.
+* `vector<bool> varTakeTrade`: Indicates whether the variation should take trades or not.
+* `vector<string> varMaintenanceStartTime`: Time at which maintenance will start for the variation.
+* `vector<string> varMaintenanceEndTime`: Time at which maintenance will end for the variation.
+* `vector<bool> varIsMaintenanceRequired`: Indicates whether maintenance is required for the variation.
+* `vector<int> varOrderSchedulingDuration`: Duration (in seconds) for which orders will be scheduled for the variation.
+* `vector<bool> varIsStoplossType1`: Indicates whether stoploss of type 1 is required for the variation.
+* `vector<double> varStoplossType1Parameter`: Parameter value for stoploss of type 1.
+* `vector<bool> varIsStoplossType2`: Indicates whether stoploss of type 2 is required for the variation.
+* `vector<double> varStoplossType2Parameter`: Parameter value for stoploss of type 2.
+* `vector<bool> varIsStoplossType3`: Indicates whether stoploss of type 3 is required for the variation.
+* `vector<double> varStoplossType3Parameter`: Parameter value for stoploss of type 3.
+* `vector<bool> varIsStoplossType4`: Indicates whether stoploss of type 4 is required for the variation.
+* `vector<double> varStoplossType4Parameter`: Parameter value for stoploss of type 4.
+* `vector<bool> varIsStoplossType5`: Indicates whether stoploss of type 5 is required for the variation.
+* `vector<double> varStoplossType5Parameter`: Parameter value for stoploss of type 5.
+* `vector<bool> varIsStoplossType6`: Indicates whether stoploss of type 6 is required for the variation.
+* `vector<double> varStoplossType6Parameter`: Parameter value for stoploss of type 6.
+* `vector<int> varStoplossCoolDownSec`: Duration (in seconds) for which the variation must stop trading after a stoploss is hit.
+* `vector<bool> varIsSquareoffRequired`: Indicates whether template-based square-off is required for the variation.
+* `vector<string> varSquareoffStartTime`: Square-off start time for the variation.
+* `vector<int> varSquareoffDuration`: Duration (in seconds) of the square-off for the variation.
+* `vector<bool> varSendStoplossOrdersNow`: Indicates whether stoploss orders should be sent immediately.
 
 ## Function Description
 1. **init()**: This is the init function of the strategy where all the variable and timers that are common accross the strategy system is defined and initialised.
