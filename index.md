@@ -61,7 +61,7 @@
 * `int _log_var_sym_pnl`: File pointer sequence for PnL logging.
 * `int _log_theoretical_signal`: File pointer sequence for executed signal logging.
 * `vector<vector<array<int, 3>>> instIdToOrderTypeToPosition`: Mapping of instrument ID to order type and position.
-* `vector<PositionInfo*> instIdToPositionInfo;`: Instrument-wise position information, where the vector index represents the instrument ID.
+* `vector<PositionInfo*> instIdToPositionInfo`: `: Instrument-wise position information, where the vector index represents the instrument ID.
 * `enum OrderType`: `type` of order 
 * `enum QuantityType`: `type` of quantity
 
@@ -107,8 +107,20 @@
 * `vector<bool> varSendStoplossOrdersNow`: Indicates whether stoploss orders should be sent immediately.
 
 ## Function Description
-1. **init()**: This is the init function of the strategy where all the variable and timers that are common accross the strategy system is defined and initialised.
-2. **logic_init()**: All the variables and data structures specific to the logic are loaded in this function.
-3. **setup_timers()**: This function initialises timers for all the variation that are supposed to be running today. This is called inside `logic_init()`.
-4. **load_historical_data()**: This function calls the function `load_trading_days` that initialises the `tradingDays` variable and loads the historical data in the variable `histData`. This function is called inside `logic_init()` as well.
-5. **crash_handler()**:
+* `void init(Config* config, View* view, string& name)`:  This is the initialization function for the strategy, where all the variables and timers that are common across the strategy system are defined and initialized.
+* `void logic_init(Config* config)`: This function loads all the variables and data structures specific to the strategy logic.
+* `void setup_timers(vector<int> varNos)`: Initializes timers for all variations that are scheduled to run today. This function is called within `logic_init(Config* config)`.
+* `void load_trading_days(Config* config)`: Initializes the `tradingDays` variable.
+* `void load_historical_data(Config* config)`: Calls the `load_trading_days(Config* config)` function to initialize the `tradingDays` variable and loads historical data into the `histData` variable. This function is also called within `logic_init(Config* config)`.
+* `void crash_handler(Config* config)`: Re-initializes the data structures `varNoToInstIdToOrderTypeToPosition`, `varNoToInstIdToPositionInfo`, and `dayData` after a crash.
+* `void handle_trade_events(Event* e)`: Handles trade-related events.
+* `void handle_touch_events(Event* e)`: Handles touch-related events.
+* `void handle_index_events(Event* e)`: Handles index-related events.
+* `void handle_predictor_events(Event* e)`: Handles predictor-related events.
+* `void handle_timer_events(Event* e)`: Handles timer-related events. All timers created within the strategy trigger this function when executed.
+* `void create_signal_and_place_order(int varNo)`: Called for each variation at a specific frequency. Within this function, the `create_entry` and `create_exit` functions are invoked.
+* `void create_entry(int varNo)` and `void create_exit(int varNo)`: Functions for generating entry and exit signals, respectively. Users must implement their specific logic within these functions.
+* `void write_theoretical_signal(int varNo, string symbol, int localId, string signal, double entryPrice, int quantity, int type)`: Logs the executed signal into a file.
+* `void csv_2_vec(const string& str, vector<string>& results)`: Converts a comma-separated string into a vector.
+* `int get_trading_day_index(string tradingDay, vector<string> tradingDays)`: Returns the index of a given date within the `tradingDays` vector.
+* `bool is_valid_inst(int instId)`: Checks the validity of an `instId`, ensuring it is suitable for placing an order. Users must call this function before generating a signal for an `instId`.
